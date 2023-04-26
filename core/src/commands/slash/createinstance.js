@@ -93,7 +93,7 @@ module.exports = {
               await interaction.editReply({ content:`:orange_circle: [${id}] Installation de l'instances...` , ephemeral: true})  
               await install(id, interaction.options.get("template").value)
               await interaction.editReply({ content:`:white_check_mark: [${id}] Démarrage de l'instances...` , ephemeral: true})  
-              return process.createProcess(id, `node`, [`./src/instances/bots/${id}/index.js`, `${interaction.options.get("token").value}`, `${interaction.user.id}`], client)
+              return process.createProcess(id, `node`, [`./index.js`, `${interaction.options.get("token").value}`, `${interaction.user.id}`], client, `./src/instances/bots/${id}/`)
   
           }
           return;
@@ -118,7 +118,7 @@ return;
           reject(new Error(`Command failed with code ${code}: ${stderr}`));
           return;
         }
-        resolve(stdout.trim());
+        resolve("Success installed");
       });
     })
 

@@ -1,9 +1,9 @@
 const {spawn} = require('child_process')
 const db = require('./DataManager')
 
-async function createProcess(id, commands, args, client) {
+async function createProcess(id, commands, args, client, dir) {
     if (db.getStats(id) == "running") return "alrrunning"
-    const childProcess = spawn(commands, args);
+    const childProcess = spawn(commands, args, { cwd: dir });
     db.processlist[id] = {
       name: `Process ${id}`,
       state: 'running',

@@ -24,7 +24,8 @@ const client = new Discord.Client({
       ]
     })
 const {readdirSync} = require("fs")
-const db = require('quick.db')
+const { QuickDB } = require('quick.db')
+const db = new QuickDB({ filePath: __dirname + `\\db.sqlite` });
 const ms = require("ms")
 const { MessageEmbed } = require('discord.js')
 const {login } = require("./util/login.js");
