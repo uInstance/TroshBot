@@ -108,8 +108,8 @@ function createUser(id) {
     return pool.query(`INSERT INTO user (userid, maxinstance) VALUES ('${id}', '2')`)
 }
 
-function createInstance(id, userid, template, token) {
-    return pool.query(`INSERT INTO instance (id, userid, template, token, stats) VALUES ('${id}', '${userid}', '${template}', '${token}', 'running')`)
+function createInstance(id, userid, template, token, nodeid) {
+    return pool.query(`INSERT INTO instance (id, userid, template, token, stats, node) VALUES ('${id}', '${userid}', '${template}', '${token}', 'running', '${nodeid}')`)
 }
 
 function setStats(id, stats) {
