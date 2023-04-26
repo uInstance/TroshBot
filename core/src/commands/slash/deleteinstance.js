@@ -28,7 +28,7 @@ module.exports = {
         await interaction.editReply({ content: `:orange_circle: ${interaction.options.get("id").value} Arrêt de l'instance...`, ephemeral: true})
         process.stopProcess(interaction.options.get("id").value)
         await interaction.editReply({ content: `:orange_circle: ${interaction.options.get("id").value} Supression de l'instance...`, ephemeral: true})
-        shjs.rm('-rf', `./src/instances/bots/${interaction.options.get("id").value}`)
+        await deleteinstance(interaction.options.get("id").value)
         delete db.processlist[interaction.options.get("id").value]
         await interaction.editReply({ content: `:white_check_mark: [${interaction.options.get("id").value}] Instance désinstallé !`, ephemeral: true})
 
@@ -38,4 +38,13 @@ module.exports = {
 
 
     }
+
+    
  };
+
+ function deleteinstance(id) {
+  return new Promise(async(resolve, reject)  => {
+    shjs.rm('-rf', `./src/instances/bots/${id}`)
+    resolve()
+  })
+}
