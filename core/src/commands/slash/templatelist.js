@@ -21,10 +21,11 @@ module.exports = {
 	.setColor(0x0099FF)
 	.setTitle('Liste de vos instances')
 	.setDescription(`
-    **Template TEST**
+    **Template PROTECT**
     > Auteur : UTrosh
     > Version : 1.0.0
-    > Prix : Gratuit :white_check_mark:`)
+    > Prix : Gratuit :white_check_mark:
+    Description : Cette template est un bot multifonction de protection (ressemblant a crowbot)`)
 	.setFooter({ text: 'TroshBot | Hosted by TroshHost.fr' });
 
     return await interaction.editReply({ embeds: [exampleEmbed], ephemeral: true})

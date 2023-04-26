@@ -113,7 +113,7 @@ return;
     shjs.cp('-R', `./src/instances/template/${template}.zip`, `./src/instances/bots/${id}`)
     fs.createReadStream(`./src/instances/bots/${id}/${template}.zip`).pipe(unzipper.Extract({ path: `./src/instances/bots/${id}` })).on('finish', async () => {
       shjs.rm('-rf', `./src/instances/bots/${id}/${template}.zip`)
-      shjs.exec(`cd ./src/instances/bots/${id} && npm i`, {async:true, silent:true}, (code, stdout, stderr) => {
+      shjs.exec(`cd ./src/instances/bots/${id} && npm i`, {async:true}, (code, stdout, stderr) => {
         if (code !== 0) {
           reject(new Error(`Command failed with code ${code}: ${stderr}`));
           return;
