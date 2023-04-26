@@ -5,7 +5,7 @@ const process = require('../../manager/ProcessManager')
 const nodemgr = require('../../manager/NodeManager')
 const shjs = require('shelljs')
 const fs = require("fs");
-const uz = require('unzipper')
+const unzipper = require('unzipper')
 const config = require('../../config')
 
 module.exports = {
@@ -24,7 +24,7 @@ module.exports = {
   // komutu geliştirmek istersen guide: https://discordjs.guide/slash-commands/advanced-creation.html
   run: async (client, interaction) => {    
 
-    if (!fs.existsSync(`./src/instances/template/${interaction.options.get("template").value}`)) {
+    if (!fs.existsSync(`./src/instances/template/${interaction.options.get("template").value}.zip`)) {
       return await interaction.reply({ content: ":x: Cette template n'éxiste pas !", ephemeral: true})
   }
 
@@ -89,11 +89,11 @@ module.exports = {
               TOKEN : Token du bot
   
               */ 
-              db.createInstance(id, interaction.user.id, interaction.options.get("template").value, interaction.options.get("token").value)
+              db.createInstance(id, interaction.user.id, interaction.options.get("template").value, interaction.options.get("token").value, "selfhosted")
               await interaction.editReply({ content:`:orange_circle: [${id}] Installation de l'instances...` , ephemeral: true})  
               await install(id, interaction.options.get("template").value)
               await interaction.editReply({ content:`:white_check_mark: [${id}] Démarrage de l'instances...` , ephemeral: true})  
-              return process.createProcess(id, `node`, [`./src/instances/bots/${id}/index.js`, `${interaction.options.get("token").value}`], client)
+              return process.createProcess(id, `node`, [`./src/instances/bots/${id}/index.js`, `${interaction.options.get("token").value}`, `${interaction.user.id}`], client)
   
           }
           return;
@@ -108,18 +108,20 @@ return;
  };
 
  function install(id, template) {
-  return new Promise((resolve, reject) => {
+  return new Promise(async(resolve, reject)  => {
     shjs.mkdir(`./src/instances/bots/${id}`)
     shjs.cp('-R', `./src/instances/template/${template}.zip`, `./src/instances/bots/${id}`)
-    fs.createReadStream(`./src/instances/bots/${id}/${template}.zip`).pipe(unzipper.Extract({ path: `./src/instances/bots/${id}` }));
-    shjs.rm('-rf', `./src/instances/bots/${id}/${template}.zip`)
-    shjs.exec(`cd ./src/instances/bots/${id} && npm i`, {async:true, silent:true}, (code, stdout, stderr) => {
-      if (code !== 0) {
-        reject(new Error(`Command failed with code ${code}: ${stderr}`));
-        return;
-      }
-      resolve(stdout.trim());
-    });
+    fs.createReadStream(`./src/instances/bots/${id}/${template}.zip`).pipe(unzipper.Extract({ path: `./src/instances/bots/${id}` })).on('finish', async () => {
+      shjs.rm('-rf', `./src/instances/bots/${id}/${template}.zip`)
+      shjs.exec(`cd ./src/instances/bots/${id} && npm i`, {async:true, silent:true}, (code, stdout, stderr) => {
+        if (code !== 0) {
+          reject(new Error(`Command failed with code ${code}: ${stderr}`));
+          return;
+        }
+        resolve(stdout.trim());
+      });
+    })
+
 
   });
 }

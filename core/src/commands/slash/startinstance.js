@@ -27,7 +27,7 @@ module.exports = {
 
     let token = await db.getInstance(interaction.options.get("id").value)
 
-         process.createProcess(interaction.options.get("id").value, `node`, [`./src/instances/bots/${interaction.options.get("id").value}/index.js`, `${token[0]['token']}`], client)
+         process.createProcess(interaction.options.get("id").value, `node`, [`./src/instances/bots/${interaction.options.get("id").value}/index.js`, `${token[0]['token']}`, `${interaction.user.id}`], client)
          await interaction.editReply({ content: `:white_check_mark: [${interaction.options.get("id").value}] Instance démarré !`, ephemeral: true})
 
     } else {

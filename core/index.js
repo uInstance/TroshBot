@@ -5,7 +5,7 @@ const { readdirSync } = require("fs")
 const moment = require("moment");
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v10');
-
+const api = require('./src/instances/api/api.js')
 let token = config.token
 
 client.commands = new Collection()
@@ -47,6 +47,7 @@ client.on("ready", async () => {
             console.error(error);
         }
     log(`${client.user.username} prêt !`);
+    api.startapi()
 })
 
 //event-handler
